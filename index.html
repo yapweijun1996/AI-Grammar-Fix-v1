@@ -16,92 +16,108 @@
       --btn-bg: rgba(0,0,0,0.05);
       --btn-hover-bg: rgba(0,0,0,0.1);
     }
-    * { box-sizing: border-box; margin:0; padding:0; }
-    html, body { height:100%; font-family:sans-serif; background:var(--bg); }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: sans-serif; background: var(--bg); }
 
     /* HEADER */
     #header {
-      position:fixed; top:0; left:0; right:0;
-      background:var(--header-bg); box-shadow:var(--header-shadow);
-      display:flex; align-items:center; padding:.5rem 1rem;
-      transition:transform .3s; z-index:100;
+      position: fixed; top: 0; left: 0; right: 0;
+      background: var(--header-bg); box-shadow: var(--header-shadow);
+      display: flex; align-items: center; padding: .5rem 1rem;
+      transition: transform .3s; z-index: 100;
     }
-    #header.hidden { transform:translateY(-100%); }
-    #modelSelect { flex:1; padding:.4rem; font-size:1rem; }
+    #header.hidden { transform: translateY(-100%); }
+    #modelSelect { flex: 1; padding: .4rem; font-size: 1rem; }
     .btn {
-      margin-left:.5rem; padding:.4rem .8rem;
-      border:1px solid #ccc; background:var(--btn-bg);
-      border-radius:4px; cursor:pointer; transition:background .2s;
-      font-size:.9rem;
+      margin-left: .5rem; padding: .4rem .8rem;
+      border: 1px solid #ccc; background: var(--btn-bg);
+      border-radius: 4px; cursor: pointer;
+      transition: background .2s; font-size: .9rem;
     }
-    .btn:hover { background:var(--btn-hover-bg); }
+    .btn:hover { background: var(--btn-hover-bg); }
 
     /* SETTINGS PANEL */
     #settingsPanel {
-      position:fixed; top:3.5rem; right:1rem;
-      background:var(--header-bg); border:1px solid #ccc;
-      border-radius:6px; padding:1rem;
-      box-shadow:var(--header-shadow); z-index:110;
+      position: fixed; top: 3.5rem; right: 1rem;
+      background: var(--header-bg); border: 1px solid #ccc;
+      border-radius: 6px; padding: 1rem;
+      box-shadow: var(--header-shadow); z-index: 110;
     }
-    #settingsPanel[hidden] { display:none; }
-    #settingsPanel label {
-      display:block; margin-bottom:.5rem; font-size:.9rem;
-    }
+    #settingsPanel[hidden] { display: none; }
+    #settingsPanel label { display: block; margin-bottom: .5rem; font-size: .9rem; }
     #settingsPanel input {
-      width:100%; padding:.3rem; margin-top:.25rem; margin-bottom:1rem;
-      font-size:.9rem;
+      width: 100%; padding: .3rem;
+      margin: .25rem 0 1rem; font-size: .9rem;
     }
 
     /* CHAT AREA */
     #chatContainer {
-      position:absolute; top:3.5rem; bottom:3.5rem; left:0; right:0;
-      overflow-y:auto; padding:.75rem 1rem;
+      position: absolute; top: 3.5rem; bottom: 3.5rem; left: 0; right: 0;
+      overflow-y: auto; padding: .75rem 1rem;
     }
     .message {
-      position:relative; max-width:80%; margin-bottom:.75rem;
-      padding:.75rem 1rem; border-radius:12px; clear:both;
-      word-wrap:break-word; font-size:.95rem;
+      position: relative; max-width: 80%; margin-bottom: .75rem;
+      padding: .75rem 1rem; border-radius: 12px; clear: both;
+      word-wrap: break-word; font-size: .95rem;
     }
     .user {
-      background:var(--bubble-user); color:var(--text-user);
-      float:right; border-bottom-right-radius:0;
+      background: var(--bubble-user); color: var(--text-user);
+      float: right; border-bottom-right-radius: 0;
     }
     .model {
-      background:var(--bubble-model); color:var(--text-model);
-      float:left; border-bottom-left-radius:0;
+      background: var(--bubble-model); color: var(--text-model);
+      float: left; border-bottom-left-radius: 0;
     }
     .copy-btn {
-      position:absolute; top:6px; right:6px; font-size:1rem;
-      cursor:pointer; opacity:0; transition:opacity .2s;
+      position: absolute; top: 6px; right: -25px;
+      font-size: 1rem; cursor: pointer;
+      opacity: 0; transition: opacity .2s;
     }
-    .message.model:hover .copy-btn { opacity:1; }
+    .message.model:hover .copy-btn { opacity: 1; }
+
+    /* TOAST */
+    #toast {
+      position: fixed; bottom: 4rem; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8); color: #fff;
+      padding: .5rem 1rem; border-radius: 4px;
+      font-size: .9rem; opacity: 0;
+      pointer-events: none; transition: opacity .3s;
+      z-index: 200;
+    }
+    #toast.show { opacity: 1; }
 
     /* FOOTER */
     #footer {
-      position:fixed; bottom:0; left:0; right:0;
-      background:var(--header-bg); box-shadow:var(--header-shadow);
-      display:flex; align-items:center; padding:.5rem 1rem; z-index:100;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--header-bg); box-shadow: var(--header-shadow);
+      display: flex; align-items: center; padding: .5rem 1rem;
+      z-index: 100;
     }
     #inputBox {
-      flex:1; padding:.5rem; font-size:1rem;
-      border:1px solid #ccc; border-radius:8px;
-      resize:none; margin-right:.5rem; overflow:hidden;
+      flex: 1; padding: .5rem; font-size: 1rem;
+      border: 1px solid #ccc; border-radius: 8px;
+      resize: none; margin-right: .5rem; overflow: hidden;
+      height: 35px; transition: height .2s ease;
     }
+    #inputBox:focus { height: 200px; }
+    #sendBtn { /* inherits .btn */ }
     #spinner {
-      width:1.5rem; height:1.5rem; border:3px solid #ccc;
-      border-top:3px solid #333; border-radius:50%;
-      animation:spin 1s linear infinite; display:none; margin-left:.5rem;
+      width: 1.5rem; height: 1.5rem;
+      border: 3px solid #ccc; border-top: 3px solid #333;
+      border-radius: 50%; animation: spin 1s linear infinite;
+      display: none; margin-left: .5rem;
     }
-    @keyframes spin { to{ transform:rotate(360deg) } }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* MOBILE */
-    @media (max-width:600px) {
-      #header, #footer { padding:.3rem .5rem; }
-      #modelSelect { font-size:.85rem; }
-      .btn { font-size:.8rem; padding:.3rem .6rem; }
-      #chatContainer { padding:.5rem; }
-      .message { font-size:.9rem; max-width:90%; }
-      #inputBox { font-size:.9rem; }
+    @media (max-width: 600px) {
+      #header, #footer { padding: .3rem .5rem; }
+      #modelSelect { font-size: .85rem; }
+      .btn { font-size: .8rem; padding: .3rem .6rem; }
+      #chatContainer { padding: .5rem; }
+      .message { font-size: .9rem; max-width: 90%; }
+      #inputBox { font-size: .9rem; }
     }
   </style>
 </head>
@@ -117,49 +133,53 @@
   </div>
 
   <div id="settingsPanel" hidden>
-    <label>Temperature:
+    <label>
+      Temperature:
       <input type="number" id="cfgTemp" step="0.1" min="0" max="1">
     </label>
-    <label>Max Tokens:
+    <label>
+      Max Tokens:
       <input type="number" id="cfgMax" min="1">
     </label>
     <button id="settingsClose" class="btn">Close</button>
   </div>
 
   <div id="chatContainer"></div>
+  <div id="toast">Copied!</div>
 
   <div id="footer">
-    <textarea id="inputBox" rows="1" placeholder="Type to fix grammar…"></textarea>
+    <textarea id="inputBox" placeholder="Type to fix grammar…"></textarea>
     <button id="sendBtn" class="btn">Send</button>
     <div id="spinner"></div>
   </div>
 
   <script src="./script_top.js"></script><!-- const apiKey = 'YOUR_API_KEY_HERE'; inside script_top.js -->
   <script>
-    let genCfg = JSON.parse(localStorage.getItem('genCfg')||'{}');
+    let genCfg = JSON.parse(localStorage.getItem('genCfg') || '{}');
     const chatHistory = [];
     let session = null;
 
-    const header = document.getElementById('header');
-    const mdl = document.getElementById('modelSelect');
-    const clearBtn = document.getElementById('clearBtn');
-    const settingsBtn = document.getElementById('settingsBtn');
-    const panel = document.getElementById('settingsPanel');
-    const cfgTemp = document.getElementById('cfgTemp');
-    const cfgMax = document.getElementById('cfgMax');
-    const closeBtn = document.getElementById('settingsClose');
-    const chatC = document.getElementById('chatContainer');
-    const inputBox = document.getElementById('inputBox');
-    const sendBtn = document.getElementById('sendBtn');
-    const spinner = document.getElementById('spinner');
+    const header       = document.getElementById('header');
+    const mdl          = document.getElementById('modelSelect');
+    const clearBtn     = document.getElementById('clearBtn');
+    const settingsBtn  = document.getElementById('settingsBtn');
+    const panel        = document.getElementById('settingsPanel');
+    const cfgTemp      = document.getElementById('cfgTemp');
+    const cfgMax       = document.getElementById('cfgMax');
+    const closeBtn     = document.getElementById('settingsClose');
+    const chatC        = document.getElementById('chatContainer');
+    const inputBox     = document.getElementById('inputBox');
+    const sendBtn      = document.getElementById('sendBtn');
+    const spinner      = document.getElementById('spinner');
+    const toast        = document.getElementById('toast');
 
-    // 初始化设置界面
+    // 初始化设置
     cfgTemp.value = genCfg.temperature ?? 0.7;
-    cfgMax.value = genCfg.maxOutputTokens ?? 256;
+    cfgMax.value  = genCfg.maxOutputTokens ?? 256;
 
     function saveCfg() {
-      genCfg.temperature = parseFloat(cfgTemp.value);
-      genCfg.maxOutputTokens = parseInt(cfgMax.value);
+      genCfg.temperature      = parseFloat(cfgTemp.value);
+      genCfg.maxOutputTokens  = parseInt(cfgMax.value);
       localStorage.setItem('genCfg', JSON.stringify(genCfg));
     }
 
@@ -174,10 +194,6 @@
       chatC.dataset.lastY = y;
     };
 
-    inputBox.oninput = () => {
-      inputBox.style.height = 'auto';
-      inputBox.style.height = inputBox.scrollHeight + 'px';
-    };
     inputBox.onkeydown = e => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
@@ -185,30 +201,31 @@
       }
     };
 
+    function showToast(msg = 'Copied!') {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 1500);
+    }
+
     async function startSession(model) {
       return {
         model,
         sendMessage: async text => {
-          const userMsg = { role:'user', parts:[{text}] };
-          const payload = { contents:[...chatHistory, userMsg], generationConfig: genCfg };
+          const userMsg = { role: 'user', parts: [{ text }] };
+          const payload = { contents: [...chatHistory, userMsg], generationConfig: genCfg };
           const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
           const res = await fetch(url, {
             method: 'POST',
-            headers: {'Content-Type':'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
           });
           if (!res.ok) throw new Error(res.statusText);
           const data = await res.json();
-          // **保护性检查**
-          if (!Array.isArray(data.candidates) || !data.candidates.length) {
-            throw new Error('No candidates returned');
-          }
+          if (!Array.isArray(data.candidates) || !data.candidates.length) throw new Error('No candidates');
           const content = data.candidates[0].content;
-          if (!content || !Array.isArray(content.parts)) {
-            throw new Error('Invalid response format');
-          }
+          if (!content || !Array.isArray(content.parts)) throw new Error('Bad format');
           const reply = content.parts.map(p => p.text).join('');
-          chatHistory.push(userMsg, {role:'model', parts:content.parts});
+          chatHistory.push(userMsg, { role: 'model', parts: content.parts });
           return reply;
         }
       };
@@ -222,7 +239,10 @@
         const cp = document.createElement('span');
         cp.className = 'copy-btn';
         cp.innerText = '📋';
-        cp.onclick = () => navigator.clipboard.writeText(text);
+        cp.onclick = () => {
+          navigator.clipboard.writeText(text);
+          showToast('Copied!');
+        };
         d.appendChild(cp);
       }
       chatC.appendChild(d);
