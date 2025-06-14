@@ -186,7 +186,7 @@
               inputBox.value = txt;
               inputBox.dispatchEvent(new Event('input'));
               inputBox.focus();
-              if (autoSendCbx.checked) { await send(); chatC.focus(); }
+              if (autoSendCbx.checked) { await send(); }
             }
           } catch {}
         };
@@ -241,6 +241,7 @@
         chatC.scrollTo({ top: chatC.scrollHeight, behavior: 'smooth' });
         inputBox.value = '';
         inputBox.focus();
+	  chatC.focus();
         spinner.style.display = 'inline-block'; sendBtn.disabled = true;
         try {
           const model = mdl.value;
