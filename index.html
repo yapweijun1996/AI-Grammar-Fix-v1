@@ -16,105 +16,118 @@
       --btn-bg: rgba(0,0,0,0.05);
       --btn-hover-bg: rgba(0,0,0,0.1);
     }
-    * { box-sizing: border-box; margin:0; padding:0; }
-    html, body { height:100%; font-family:sans-serif; background:var(--bg); }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: sans-serif; background: var(--bg); }
 
     /* HEADER */
     #header {
-      position:fixed; top:0; left:0; right:0;
-      background:var(--header-bg); box-shadow:var(--header-shadow);
-      display:flex; align-items:center; padding:.5rem 1rem;
-      transition:transform .3s; z-index:100;
+      position: fixed; top: 0; left: 0; right: 0;
+      background: var(--header-bg); box-shadow: var(--header-shadow);
+      display: flex; align-items: center; padding: .5rem 1rem;
+      transition: transform .3s; z-index: 100;
     }
-    #header.hidden { transform:translateY(-100%); }
-    #modelSelect { flex:1; padding:.4rem; font-size:1rem; }
+    #header.hidden { transform: translateY(-100%); }
+    #modelSelect { flex: 1; padding: .4rem; font-size: 1rem; }
     .btn {
-      margin-left:.5rem; padding:.4rem .8rem;
-      border:1px solid #ccc; background:var(--btn-bg);
-      border-radius:4px; cursor:pointer;
-      transition:background .2s; font-size:.9rem;
+      margin-left: .5rem; padding: .4rem .8rem;
+      border: 1px solid #ccc; background: var(--btn-bg);
+      border-radius: 4px; cursor: pointer; transition: background .2s;
+      font-size: .9rem;
     }
-    .btn:hover { background:var(--btn-hover-bg); }
+    .btn:hover { background: var(--btn-hover-bg); }
 
     /* SETTINGS PANEL */
     #settingsPanel {
-      position:fixed; top:3.5rem; right:1rem;
-      background:var(--header-bg); border:1px solid #ccc;
-      border-radius:6px; padding:1rem;
-      box-shadow:var(--header-shadow); z-index:110;
+      position: fixed; top: 3.5rem; right: 1rem;
+      background: var(--header-bg); border: 1px solid #ccc;
+      border-radius: 6px; padding: 1rem;
+      box-shadow: var(--header-shadow); z-index: 110;
     }
-    #settingsPanel[hidden] { display:none; }
-    #settingsPanel label { display:block; margin-bottom:.5rem; font-size:.9rem; }
-    #settingsPanel input {
-      width:100%; padding:.3rem; margin:.25rem 0 1rem; font-size:.9rem;
+    #settingsPanel[hidden] { display: none; }
+    #settingsPanel label { display: block; margin-bottom: .5rem; font-size: .9rem; }
+    #settingsPanel input[type="number"] {
+      width: 100%; padding: .3rem; margin: .25rem 0 1rem; font-size: .9rem;
     }
+    #settingsPanel label.checkbox {
+      display: flex; align-items: center; margin-bottom: 1rem;
+    }
+    #settingsPanel label.checkbox input { margin-right: .5rem; }
 
     /* CHAT AREA */
     #chatContainer {
-      position:absolute; top:3.5rem; bottom:3.5rem; left:0; right:0;
-      overflow-y:auto; padding:.75rem 1rem;
+      position: absolute; top: 0; bottom: 3.5rem; left: 0; right: 0;
+      overflow-y: auto; padding: .75rem 1rem; padding-bottom: 0px; padding-top: 60px;
     }
     .message {
-      position:relative; max-width:80%; margin-bottom:.75rem;
-      padding:.75rem 1rem; border-radius:12px; clear:both;
-      word-wrap:break-word; font-size:.95rem;
-      white-space: pre-wrap;    /* preserve line breaks */
+      position: relative; max-width: 80%; margin-bottom: .75rem;
+      padding: .75rem 1rem; border-radius: 12px; clear: both;
+      word-wrap: break-word; font-size: .95rem; white-space: pre-wrap;
     }
     .user {
-      background:var(--bubble-user); color:var(--text-user);
-      float:right; border-bottom-right-radius:0;
+      background: var(--bubble-user); color: var(--text-user);
+      float: right; border-bottom-right-radius: 0;
     }
     .model {
-      background:var(--bubble-model); color:var(--text-model);
-      float:left; border-bottom-left-radius:0;
-      padding-right:2.5rem;      /* space for copy button */
+      background: var(--bubble-model); color: var(--text-model);
+      float: left; border-bottom-left-radius: 0; padding-right: 2.5rem;
     }
     .copy-btn {
-      position:absolute; top:6px; right:6px;
-      font-size:1rem; cursor:pointer; opacity:1;
+      position: absolute; top: 6px; right: 6px;
+      font-size: 1rem; cursor: pointer; opacity: 1;
     }
 
     /* TOAST */
     #toast {
-      position:fixed; bottom:4rem; left:50%;
-      transform:translateX(-50%);
-      background:rgba(0,0,0,0.8); color:#fff;
-      padding:.5rem 1rem; border-radius:4px;
-      font-size:.9rem; opacity:0;
-      pointer-events:none; transition:opacity .3s;
-      z-index:200;
+      position: fixed; bottom: 4rem; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.8); color: #fff;
+      padding: .5rem 1rem; border-radius: 4px;
+      font-size: .9rem; opacity: 0;
+      pointer-events: none; transition: opacity .3s; z-index: 200;
     }
-    #toast.show { opacity:1; }
+    #toast.show { opacity: 1; }
 
     /* FOOTER */
     #footer {
-      position:fixed; bottom:0; left:0; right:0;
-      background:var(--header-bg); box-shadow:var(--header-shadow);
-      display:flex; align-items:center; padding:.5rem 1rem; z-index:100;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--header-bg); box-shadow: var(--header-shadow);
+      display: flex; align-items: center; padding: .5rem 1rem; z-index: 100;
     }
+    #footer > * { margin-right: .5rem; }
     #inputBox {
-      flex:1; padding:.5rem; font-size:1rem;
-      border:1px solid #ccc; border-radius:8px;
-      resize:none; margin-right:.5rem; overflow:hidden;
-      height:35px; transition:height .2s ease;
+      flex: 1; padding: .5rem; font-size: 1rem;
+      border: 1px solid #ccc; border-radius: 8px;
+      resize: none; overflow: hidden;
+      height: 35px; transition: height .2s ease;
     }
-    #inputBox:focus { height:200px; }
+    /* pasteBtn, sendBtn inherit .btn */
     #spinner {
-      width:1.5rem; height:1.5rem;
-      border:3px solid #ccc; border-top:3px solid #333;
-      border-radius:50%; animation:spin 1s linear infinite;
-      display:none; margin-left:.5rem;
+      width: 1.5rem; height: 1.5rem;
+      border: 3px solid #ccc; border-top: 3px solid #333;
+      border-radius: 50%; animation: spin 1s linear infinite;
+      display: none;
     }
-    @keyframes spin { to{ transform:rotate(360deg) } }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* MOBILE */
-    @media (max-width:600px) {
-      #header, #footer { padding:.3rem .5rem; }
-      #modelSelect { font-size:.85rem; }
-      .btn { font-size:.8rem; padding:.3rem .6rem; }
-      #chatContainer { padding:.5rem; }
-      .message { font-size:.9rem; max-width:90%; }
-      #inputBox { font-size:.9rem; }
+    /* MOBILE: TEXTAREA AT TOP, BUTTONS BELOW */
+    @media (max-width: 600px) {
+      #footer {
+        display: block;
+        flex-direction: column;
+        align-items: stretch;
+      }
+		/* CHAT AREA */
+		#chatContainer {
+		  padding-bottom: 100px;
+		}
+      #inputBox {
+        width: 100%; margin: 0 0 .5rem 0;
+      }
+      #pasteBtn, #sendBtn {
+        width: 100%; margin: 0 0 .5rem 0;
+      }
+      #spinner {
+        margin: 0 0 .5rem 0; align-self: center;
+      }
     }
   </style>
 </head>
@@ -138,6 +151,10 @@
       Max Tokens:
       <input type="number" id="cfgMax" min="1">
     </label>
+    <label class="checkbox">
+      <input type="checkbox" id="autoSend" checked>
+      Paste button auto-send
+    </label>
     <button id="settingsClose" class="btn">Close</button>
   </div>
 
@@ -146,137 +163,176 @@
 
   <div id="footer">
     <textarea id="inputBox" placeholder="Type to fix grammar…"></textarea>
+    <button id="pasteBtn" class="btn" style="display:none;">Paste</button>
     <button id="sendBtn" class="btn">Send</button>
     <div id="spinner"></div>
   </div>
 
   <script src="./script_top.js"></script><!-- const apiKey = 'YOUR_API_KEY_HERE'; inside script_top.js -->
   <script>
-    let genCfg = JSON.parse(localStorage.getItem('genCfg')||'{}');
-    const chatHistory = [];
-    let session = null;
+    (function(){
+      let genCfg = JSON.parse(localStorage.getItem('genCfg')||'{}');
+      const chatHistory = [];
+      let session = null;
 
-    const header      = document.getElementById('header');
-    const mdl         = document.getElementById('modelSelect');
-    const clearBtn    = document.getElementById('clearBtn');
-    const settingsBtn = document.getElementById('settingsBtn');
-    const panel       = document.getElementById('settingsPanel');
-    const cfgTemp     = document.getElementById('cfgTemp');
-    const cfgMax      = document.getElementById('cfgMax');
-    const closeBtn    = document.getElementById('settingsClose');
-    const chatC       = document.getElementById('chatContainer');
-    const inputBox    = document.getElementById('inputBox');
-    const sendBtn     = document.getElementById('sendBtn');
-    const spinner     = document.getElementById('spinner');
-    const toast       = document.getElementById('toast');
+      const header      = document.getElementById('header');
+      const mdl         = document.getElementById('modelSelect');
+      const clearBtn    = document.getElementById('clearBtn');
+      const settingsBtn = document.getElementById('settingsBtn');
+      const panel       = document.getElementById('settingsPanel');
+      const cfgTemp     = document.getElementById('cfgTemp');
+      const cfgMax      = document.getElementById('cfgMax');
+      const autoSendCbx = document.getElementById('autoSend');
+      const closeBtn    = document.getElementById('settingsClose');
+      const chatC       = document.getElementById('chatContainer');
+      const inputBox    = document.getElementById('inputBox');
+      const pasteBtn    = document.getElementById('pasteBtn');
+      const sendBtn     = document.getElementById('sendBtn');
+      const spinner     = document.getElementById('spinner');
+      const toast       = document.getElementById('toast');
 
-    // restore settings
-    cfgTemp.value = genCfg.temperature ?? 0.7;
-    cfgMax.value  = genCfg.maxOutputTokens ?? 256;
+      // restore settings
+      cfgTemp.value = genCfg.temperature ?? 0.7;
+      cfgMax.value  = genCfg.maxOutputTokens ?? 5555;
 
-    function saveCfg() {
-      genCfg.temperature     = parseFloat(cfgTemp.value);
-      genCfg.maxOutputTokens = parseInt(cfgMax.value);
-      localStorage.setItem('genCfg', JSON.stringify(genCfg));
-    }
-
-    settingsBtn.onclick = () => panel.hidden = !panel.hidden;
-    closeBtn.onclick    = () => { saveCfg(); panel.hidden = true; };
-    clearBtn.onclick    = () => { chatHistory.length = 0; chatC.innerHTML = ''; };
-
-    chatC.onscroll = () => {
-      const y = chatC.scrollTop;
-      if (y > (chatC.dataset.lastY||0)) header.classList.add('hidden');
-      else header.classList.remove('hidden');
-      chatC.dataset.lastY = y;
-    };
-
-    inputBox.onkeydown = e => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        send();
+      function saveCfg() {
+        genCfg.temperature     = parseFloat(cfgTemp.value);
+        genCfg.maxOutputTokens = parseInt(cfgMax.value);
+        localStorage.setItem('genCfg', JSON.stringify(genCfg));
       }
-    };
 
-    function showToast(msg='Copied!') {
-      toast.textContent = msg;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 1500);
-    }
+      settingsBtn.onclick = () => panel.hidden = !panel.hidden;
+      closeBtn.onclick    = () => { saveCfg(); panel.hidden = true; };
+      clearBtn.onclick    = () => { chatC.innerHTML = ''; };
 
-    async function startSession(model) {
-      return {
-        model,
-        sendMessage: async text => {
-          const userMsg = { role: 'user', parts: [{ text }] };
-          const payload = { contents: [...chatHistory, userMsg], generationConfig: genCfg };
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-          const res = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type':'application/json' },
-            body: JSON.stringify(payload)
-          });
-          if (!res.ok) throw new Error(res.statusText);
+      if (navigator.clipboard?.readText) {
+        pasteBtn.style.display = 'inline-block';
+        pasteBtn.onclick = async () => {
+          try {
+            const txt = await navigator.clipboard.readText();
+            if (txt) {
+              inputBox.value = txt;
+              inputBox.dispatchEvent(new Event('input'));
+              inputBox.focus();
+              if (autoSendCbx.checked) send();
+            }
+          } catch {}
+        };
+      }
 
-          const data = await res.json();
-          const cand = data.candidates?.[0];
-          if (!cand) throw new Error('No candidates');
+      chatC.onscroll = () => {
+        const y = chatC.scrollTop;
+        header.classList.toggle('hidden', y > (chatC.dataset.lastY || 0));
+        chatC.dataset.lastY = y;
+      };
 
-          let reply;
-          // handle both shapes: parts-array or plain string
-          if (Array.isArray(cand.content?.parts)) {
-            reply = cand.content.parts.map(p => p.text).join('');
-          } else if (typeof cand.content === 'string') {
-            reply = cand.content;
-          } else {
-            throw new Error('Bad format');
-          }
-
-          chatHistory.push(userMsg, { role:'model', parts: cand.content?.parts || [{ text: reply }] });
-          return reply;
+      inputBox.onkeydown = e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          send();
         }
       };
-    }
 
-    function appendMsg(text, cls) {
-      const d = document.createElement('div');
-      d.className = `message ${cls}`;
-      d.innerText = text;
-      if (cls === 'model') {
-        const cp = document.createElement('span');
-        cp.className = 'copy-btn';
-        cp.innerText = '📋';
-        cp.onclick = () => { navigator.clipboard.writeText(text); showToast(); };
-        d.appendChild(cp);
+      // Auto-expand/shrink textarea on desktop focus
+      function isDesktop() {
+        return window.innerWidth > 600;
       }
-      chatC.appendChild(d);
-      chatC.scrollTo({ top: chatC.scrollHeight, behavior:'smooth' });
-    }
+      inputBox.addEventListener('focus', () => {
+        if (isDesktop()) inputBox.style.height = '200px';
+      });
+      inputBox.addEventListener('blur', () => {
+        if (isDesktop()) inputBox.style.height = '35px';
+      });
 
-    async function send() {
-      const raw = inputBox.value.trim();
-      if (!raw) return;
-      appendMsg(raw, 'user');
-      inputBox.value=''; inputBox.focus();
-      spinner.style.display='inline-block';
-      sendBtn.disabled=true;
-      try {
-        const model = mdl.value;
-        if (!session || session.model !== model) {
-          session = await startSession(model);
+      function showToast(msg = 'Copied!') {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 1500);
+      }
+
+      async function startSession(model) {
+        return {
+          model,
+          sendMessage: async text => {
+            const userMsg = { role: 'user', parts: [{ text }] };
+            chatHistory.push(userMsg);
+            const payload = {
+              contents: [...chatHistory],
+              generationConfig: {
+                temperature: parseFloat(cfgTemp.value),
+                maxOutputTokens: parseInt(cfgMax.value)
+              }
+            };
+            const res = await fetch(
+              `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+              {
+                method: 'POST',
+                headers: { 'Content-Type':'application/json' },
+                body: JSON.stringify(payload)
+              }
+            );
+            if (!res.ok) {
+              const err = await res.json().catch(() => null);
+              throw new Error(err?.error?.message || res.statusText);
+            }
+            const data = await res.json();
+            const cand = data.candidates?.[0];
+            if (!cand) throw new Error('No candidates');
+            let reply;
+            if (Array.isArray(cand.content?.parts)) {
+              reply = cand.content.parts.map(p => p.text).join('');
+            } else if (typeof cand.content === 'string') {
+              reply = cand.content;
+            } else {
+              throw new Error('Bad format');
+            }
+            chatHistory.push({ role: 'model', parts: cand.content?.parts || [{ text: reply }] });
+            return reply;
+          }
+        };
+      }
+
+      function appendMsg(text, cls) {
+        const d = document.createElement('div');
+        d.className = `message ${cls}`;
+        d.innerText = text;
+        if (cls === 'model') {
+          const cp = document.createElement('span');
+          cp.className = 'copy-btn';
+          cp.innerText = '📋';
+          cp.onclick = () => { navigator.clipboard.writeText(text); showToast(); };
+          d.appendChild(cp);
         }
-        const prompt = `Please return only the corrected text without any explanations:\n${raw}`;
-        const reply = await session.sendMessage(prompt);
-        appendMsg(reply, 'model');
-      } catch (err) {
-        appendMsg('Error: ' + err.message, 'model');
-      } finally {
-        spinner.style.display='none';
-        sendBtn.disabled=false;
+        chatC.appendChild(d);
+        chatC.scrollTo({ top: chatC.scrollHeight, behavior: 'smooth' });
       }
-    }
 
-    sendBtn.onclick = send;
+      async function send() {
+        const raw = inputBox.value.trim();
+        if (!raw) return;
+        appendMsg(raw, 'user');
+        inputBox.value = '';
+        inputBox.focus();
+        spinner.style.display = 'inline-block';
+        sendBtn.disabled = true;
+        try {
+          const model = mdl.value;
+          if (!session || session.model !== model) {
+            session = await startSession(model);
+          }
+          const prompt = `Please return only the corrected text without any explanations:\n${raw}`;
+          const reply = await session.sendMessage(prompt);
+          appendMsg(reply, 'model');
+        } catch (err) {
+          appendMsg('Error: ' + err.message, 'model');
+        } finally {
+          spinner.style.display = 'none';
+          sendBtn.disabled = false;
+        }
+      }
+
+      sendBtn.onclick = send;
+    })();
   </script>
 </body>
 </html>
