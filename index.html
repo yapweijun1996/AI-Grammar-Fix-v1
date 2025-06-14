@@ -199,9 +199,14 @@
       };
 
       inputBox.onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } };
-      function isDesktop() { return window.innerWidth > 600; }
-      inputBox.addEventListener('focus', () => { if (isDesktop()) inputBox.style.height = '200px'; });
-      inputBox.addEventListener('blur', () => { if (isDesktop()) inputBox.style.height = '35px'; });
+
+      // Auto-expand textarea height on focus, reset on blur
+      inputBox.addEventListener('focus', () => {
+        inputBox.style.height = '200px';
+      });
+      inputBox.addEventListener('blur', () => {
+        inputBox.style.height = '35px';
+      });
 
       function showToast(msg = 'Copied!') {
         toast.textContent = msg;
@@ -217,7 +222,7 @@
             if (!res.ok) { const err = await res.json().catch(() => null); throw new Error(err?.error?.message || res.statusText); }
             const data = await res.json();
             const cand = data.candidates?.[0]; if (!cand) throw new Error('No candidates');
-            const	reply = Array.isArray(cand.content?.parts) ? cand.content.parts.map(p => p.text).join('') : typeof cand.content === 'string' ? cand.content : (() => { throw new Error('Bad format'); })();
+            const reply = Array.isArray(cand.content?.parts) ? cand.content.parts.map(p => p.text).join('') : typeof cand.content === 'string' ? cand.content : (() => { throw new Error('Bad format'); })();
             chatHistory.push({ role: 'model', parts: cand.content?.parts || [{ text: reply }] });
             return reply;
           } };
@@ -239,9 +244,7 @@
         const raw = inputBox.value.trim(); if (!raw) return;
         appendMsg(raw, 'user');
         chatC.scrollTo({ top: chatC.scrollHeight, behavior: 'smooth' });
-        inputBox.value = '';
-        inputBox.focus();
-	  chatC.focus();
+        inputBox.value = ''; inputBox.focus(); chatC.focus();
         spinner.style.display = 'inline-block'; sendBtn.disabled = true;
         try {
           const model = mdl.value;
@@ -256,8 +259,7 @@
         } finally {
           spinner.style.display = 'none'; sendBtn.disabled = false;
         }
-		
-		chatC.focus();
+        chatC.focus();
       }
 
       sendBtn.onclick = send;
