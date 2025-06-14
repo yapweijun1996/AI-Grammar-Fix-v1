@@ -100,7 +100,6 @@
       resize: none; overflow: hidden;
       height: 35px; transition: height .2s ease;
     }
-    /* pasteBtn, sendBtn inherit .btn */
     #spinner {
       width: 1.5rem; height: 1.5rem;
       border: 3px solid #ccc; border-top: 3px solid #333;
@@ -109,25 +108,11 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* MOBILE: TEXTAREA AT TOP, BUTTONS BELOW */
     @media (max-width: 600px) {
-      #footer {
-        display: block;
-        flex-direction: column;
-        align-items: stretch;
-      }
-      #chatContainer {
-        padding-bottom: 100px;
-      }
-      #inputBox {
-        width: 100%; margin: 0 0 .5rem 0;
-      }
-      #pasteBtn, #sendBtn {
-        width: 100%; margin: 0 0 .5rem 0;
-      }
-      #spinner {
-        margin: 0 0 .5rem 0; align-self: center;
-      }
+      #footer { display: block; flex-direction: column; align-items: stretch; }
+      #chatContainer { padding-bottom: 100px; }
+      #inputBox, #pasteBtn, #sendBtn { width: 100%; margin: 0 0 .5rem 0; }
+      #spinner { margin: 0 0 .5rem 0; align-self: center; }
     }
   </style>
 </head>
@@ -143,18 +128,9 @@
   </div>
 
   <div id="settingsPanel" hidden>
-    <label>
-      Temperature:
-      <input type="number" id="cfgTemp" step="0.1" min="0" max="1">
-    </label>
-    <label>
-      Max Tokens:
-      <input type="number" id="cfgMax" min="1">
-    </label>
-    <label class="checkbox">
-      <input type="checkbox" id="autoSend" checked>
-      Paste button auto-send
-    </label>
+    <label>Temperature:<input type="number" id="cfgTemp" step="0.1" min="0" max="1"></label>
+    <label>Max Tokens:<input type="number" id="cfgMax" min="1"></label>
+    <label class="checkbox"><input type="checkbox" id="autoSend" checked>Paste button auto-send</label>
     <button id="settingsClose" class="btn">Close</button>
   </div>
 
@@ -174,36 +150,32 @@
       let genCfg = JSON.parse(localStorage.getItem('genCfg')||'{}');
       const chatHistory = [];
       let session = null;
-
-      const header      = document.getElementById('header');
-      const mdl         = document.getElementById('modelSelect');
-      const clearBtn    = document.getElementById('clearBtn');
+      const header = document.getElementById('header');
+      const mdl = document.getElementById('modelSelect');
+      const clearBtn = document.getElementById('clearBtn');
       const settingsBtn = document.getElementById('settingsBtn');
-      const panel       = document.getElementById('settingsPanel');
-      const cfgTemp     = document.getElementById('cfgTemp');
-      const cfgMax      = document.getElementById('cfgMax');
+      const panel = document.getElementById('settingsPanel');
+      const cfgTemp = document.getElementById('cfgTemp');
+      const cfgMax = document.getElementById('cfgMax');
       const autoSendCbx = document.getElementById('autoSend');
-      const closeBtn    = document.getElementById('settingsClose');
-      const chatC       = document.getElementById('chatContainer');
-      const inputBox    = document.getElementById('inputBox');
-      const pasteBtn    = document.getElementById('pasteBtn');
-      const sendBtn     = document.getElementById('sendBtn');
-      const spinner     = document.getElementById('spinner');
-      const toast       = document.getElementById('toast');
+      const closeBtn = document.getElementById('settingsClose');
+      const chatC = document.getElementById('chatContainer');
+      const inputBox = document.getElementById('inputBox');
+      const pasteBtn = document.getElementById('pasteBtn');
+      const sendBtn = document.getElementById('sendBtn');
+      const spinner = document.getElementById('spinner');
+      const toast = document.getElementById('toast');
 
-      // restore settings
       cfgTemp.value = genCfg.temperature ?? 0.7;
-      cfgMax.value  = genCfg.maxOutputTokens ?? 5555;
-
+      cfgMax.value = genCfg.maxOutputTokens ?? 5555;
       function saveCfg() {
-        genCfg.temperature     = parseFloat(cfgTemp.value);
+        genCfg.temperature = parseFloat(cfgTemp.value);
         genCfg.maxOutputTokens = parseInt(cfgMax.value);
         localStorage.setItem('genCfg', JSON.stringify(genCfg));
       }
-
       settingsBtn.onclick = () => panel.hidden = !panel.hidden;
-      closeBtn.onclick    = () => { saveCfg(); panel.hidden = true; };
-      clearBtn.onclick    = () => { chatC.innerHTML = ''; };
+      closeBtn.onclick = () => { saveCfg(); panel.hidden = true; };
+      clearBtn.onclick = () => { chatC.innerHTML = ''; };
 
       if (navigator.clipboard?.readText) {
         pasteBtn.style.display = 'inline-block';
@@ -214,10 +186,7 @@
               inputBox.value = txt;
               inputBox.dispatchEvent(new Event('input'));
               inputBox.focus();
-              if (autoSendCbx.checked) {
-                await send();
-                chatC.focus();
-              }
+              if (autoSendCbx.checked) { await send(); chatC.focus(); }
             }
           } catch {}
         };
@@ -229,23 +198,10 @@
         chatC.dataset.lastY = y;
       };
 
-      inputBox.onkeydown = e => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          send();
-        }
-      };
-
-      // Auto-expand/shrink textarea on desktop focus
-      function isDesktop() {
-        return window.innerWidth > 600;
-      }
-      inputBox.addEventListener('focus', () => {
-        if (isDesktop()) inputBox.style.height = '200px';
-      });
-      inputBox.addEventListener('blur', () => {
-        if (isDesktop()) inputBox.style.height = '35px';
-      });
+      inputBox.onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } };
+      function isDesktop() { return window.innerWidth > 600; }
+      inputBox.addEventListener('focus', () => { if (isDesktop()) inputBox.style.height = '200px'; });
+      inputBox.addEventListener('blur', () => { if (isDesktop()) inputBox.style.height = '35px'; });
 
       function showToast(msg = 'Copied!') {
         toast.textContent = msg;
@@ -254,45 +210,17 @@
       }
 
       async function startSession(model) {
-        return {
-          model,
-          sendMessage: async text => {
-            const userMsg = { role: 'user', parts: [{ text }] };
-            chatHistory.push(userMsg);
-            const payload = {
-              contents: [...chatHistory],
-              generationConfig: {
-                temperature: parseFloat(cfgTemp.value),
-                maxOutputTokens: parseInt(cfgMax.value)
-              }
-            };
-            const res = await fetch(
-              `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
-              {
-                method: 'POST',
-                headers: { 'Content-Type':'application/json' },
-                body: JSON.stringify(payload)
-              }
-            );
-            if (!res.ok) {
-              const err = await res.json().catch(() => null);
-              throw new Error(err?.error?.message || res.statusText);
-            }
+        return { model, sendMessage: async text => {
+            chatHistory.push({ role: 'user', parts: [{ text }] });
+            const payload = { contents: [...chatHistory], generationConfig: { temperature: parseFloat(cfgTemp.value), maxOutputTokens: parseInt(cfgMax.value) } };
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify(payload) });
+            if (!res.ok) { const err = await res.json().catch(() => null); throw new Error(err?.error?.message || res.statusText); }
             const data = await res.json();
-            const cand = data.candidates?.[0];
-            if (!cand) throw new Error('No candidates');
-            let reply;
-            if (Array.isArray(cand.content?.parts)) {
-              reply = cand.content.parts.map(p => p.text).join('');
-            } else if (typeof cand.content === 'string') {
-              reply = cand.content;
-            } else {
-              throw new Error('Bad format');
-            }
+            const cand = data.candidates?.[0]; if (!cand) throw new Error('No candidates');
+            const	reply = Array.isArray(cand.content?.parts) ? cand.content.parts.map(p => p.text).join('') : typeof cand.content === 'string' ? cand.content : (() => { throw new Error('Bad format'); })();
             chatHistory.push({ role: 'model', parts: cand.content?.parts || [{ text: reply }] });
             return reply;
-          }
-        };
+          } };
       }
 
       function appendMsg(text, cls) {
@@ -300,37 +228,32 @@
         d.className = `message ${cls}`;
         d.innerText = text;
         if (cls === 'model') {
-          const cp = document.createElement('span');
-          cp.className = 'copy-btn';
-          cp.innerText = '📋';
-          cp.onclick = () => { navigator.clipboard.writeText(text); showToast(); };
+          const cp = document.createElement('span'); cp.className = 'copy-btn'; cp.innerText = '📋'; cp.onclick = () => { navigator.clipboard.writeText(text); showToast(); };
           d.appendChild(cp);
         }
         chatC.appendChild(d);
-        chatC.scrollTo({ top: chatC.scrollHeight, behavior: 'smooth' });
+        d.scrollIntoView({ behavior: 'smooth', block: 'end' });
       }
 
       async function send() {
-        const raw = inputBox.value.trim();
-        if (!raw) return;
+        const raw = inputBox.value.trim(); if (!raw) return;
         appendMsg(raw, 'user');
+        chatC.scrollTo({ top: chatC.scrollHeight, behavior: 'smooth' });
         inputBox.value = '';
         inputBox.focus();
-        spinner.style.display = 'inline-block';
-        sendBtn.disabled = true;
+        spinner.style.display = 'inline-block'; sendBtn.disabled = true;
         try {
           const model = mdl.value;
-          if (!session || session.model !== model) {
-            session = await startSession(model);
-          }
+          if (!session || session.model !== model) session = await startSession(model);
           const prompt = `Please return only the corrected text without any explanations:\n${raw}`;
           const reply = await session.sendMessage(prompt);
           appendMsg(reply, 'model');
+          chatC.scrollTo({ top: chatC.scrollHeight, behavior: 'smooth' });
         } catch (err) {
           appendMsg('Error: ' + err.message, 'model');
+          chatC.scrollTo({ top: chatC.scrollHeight, behavior: 'smooth' });
         } finally {
-          spinner.style.display = 'none';
-          sendBtn.disabled = false;
+          spinner.style.display = 'none'; sendBtn.disabled = false;
         }
       }
 
