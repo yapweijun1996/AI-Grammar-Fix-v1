@@ -285,18 +285,6 @@
 				const inputBox = document.getElementById('inputBox');
 				// Focus the textarea when page loads
 				inputBox.focus();
-				
-				inputBox.addEventListener('paste', (event) => {
-					event.preventDefault(); // prevent default paste behavior
-					
-					// Get clipboard text synchronously from event
-					const text = event.clipboardData.getData('text/plain');
-					
-					if (text) {
-						inputBox.value = text;
-						inputBox.dispatchEvent(new Event('input')); // trigger any listeners
-					}
-				});
 			});
 			
 		</script>
