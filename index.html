@@ -279,30 +279,32 @@
 				}
 				
 				sendBtn.onclick = send;
+				
+				window.addEventListener('DOMContentLoaded', () => {
+					const inputBox = document.getElementById('inputBox');
+					// Focus the textarea when page loads
+					inputBox.focus();
+				});
+				
+				window.addEventListener('paste', (e) => {
+					e.preventDefault();
+					const clipboard = e.clipboardData || window.clipboardData;
+					if (!clipboard) {
+						alert('No clipboard data available. Please open the page via HTTP server.');
+						return;
+					}
+					const text = clipboard.getData('text');
+					console.log(text);
+					if (text) {
+						const inputBox = document.getElementById('inputBox');
+						inputBox.value = text;
+						inputBox.focus();
+						if (autoSendCbx.checked) { send(); }
+					}
+				});
 			})();
 			
-			window.addEventListener('DOMContentLoaded', () => {
-				const inputBox = document.getElementById('inputBox');
-				// Focus the textarea when page loads
-				inputBox.focus();
-			});
 			
-			window.addEventListener('keydown', async (e) => {
-  // Detect Ctrl+V or Cmd+V
-  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v') {
-var text = (e.clipboardData || window.clipboardData).getData('text');
-	  console.log(text);
-      if (text) {
-        const inputBox = document.getElementById('inputBox');
-        inputBox.value = text;
-        // Optionally scroll to end or focus
-        inputBox.focus();
-
-        // Call your existing send() function to submit
-        await send();
-      }
-  }
-});
 			
 		</script>
 	</body>
