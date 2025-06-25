@@ -290,10 +290,8 @@
 			window.addEventListener('keydown', async (e) => {
   // Detect Ctrl+V or Cmd+V
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v') {
-    e.preventDefault(); // Prevent default paste action
-
-    try {
-      const text = await navigator.clipboard.readText();
+var text = (e.clipboardData || window.clipboardData).getData('text');
+	  console.log(text);
       if (text) {
         const inputBox = document.getElementById('inputBox');
         inputBox.value = text;
@@ -303,9 +301,6 @@
         // Call your existing send() function to submit
         await send();
       }
-    } catch (err) {
-      console.error('Failed to read clipboard contents:', err);
-    }
   }
 });
 			
