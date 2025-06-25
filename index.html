@@ -282,33 +282,23 @@
 			})();
 			
 			window.addEventListener('DOMContentLoaded', () => {
-  const inputBox = document.getElementById('inputBox');
-  // Focus the textarea when page loads
-  inputBox.focus();
-
-  window.addEventListener('keydown', async (event) => {
-    // Check if Ctrl (Windows/Linux) or Command (Mac) + V is pressed
-    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'v') {
-      event.preventDefault(); // Prevent default paste action
-
-      try {
-        // Read text from clipboard asynchronously
-        const clipboardText = await navigator.clipboard.readText();
-        if (clipboardText) {
-          // Set clipboard text to textarea
-          inputBox.value = clipboardText;
-          // Dispatch input event if you have input listeners
-          inputBox.dispatchEvent(new Event('input'));
-          // Keep focus on textarea
-          inputBox.focus();
-        }
-      } catch (err) {
-        console.error('Failed to read clipboard contents: ', err);
-      }
-    }
-  });
-});
-
+				const inputBox = document.getElementById('inputBox');
+				// Focus the textarea when page loads
+				inputBox.focus();
+				
+				inputBox.addEventListener('paste', (event) => {
+					event.preventDefault(); // prevent default paste behavior
+					
+					// Get clipboard text synchronously from event
+					const text = event.clipboardData.getData('text/plain');
+					
+					if (text) {
+						inputBox.value = text;
+						inputBox.dispatchEvent(new Event('input')); // trigger any listeners
+					}
+				});
+			});
+			
 		</script>
 	</body>
 </html>
