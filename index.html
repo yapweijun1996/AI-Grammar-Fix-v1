@@ -287,6 +287,28 @@
 				inputBox.focus();
 			});
 			
+			window.addEventListener('keydown', async (e) => {
+  // Detect Ctrl+V or Cmd+V
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v') {
+    e.preventDefault(); // Prevent default paste action
+
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text) {
+        const inputBox = document.getElementById('inputBox');
+        inputBox.value = text;
+        // Optionally scroll to end or focus
+        inputBox.focus();
+
+        // Call your existing send() function to submit
+        await send();
+      }
+    } catch (err) {
+      console.error('Failed to read clipboard contents:', err);
+    }
+  }
+});
+			
 		</script>
 	</body>
 </html>
