@@ -280,6 +280,35 @@
 				
 				sendBtn.onclick = send;
 			})();
+			
+			window.addEventListener('DOMContentLoaded', () => {
+  const inputBox = document.getElementById('inputBox');
+  // Focus the textarea when page loads
+  inputBox.focus();
+
+  window.addEventListener('keydown', async (event) => {
+    // Check if Ctrl (Windows/Linux) or Command (Mac) + V is pressed
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'v') {
+      event.preventDefault(); // Prevent default paste action
+
+      try {
+        // Read text from clipboard asynchronously
+        const clipboardText = await navigator.clipboard.readText();
+        if (clipboardText) {
+          // Set clipboard text to textarea
+          inputBox.value = clipboardText;
+          // Dispatch input event if you have input listeners
+          inputBox.dispatchEvent(new Event('input'));
+          // Keep focus on textarea
+          inputBox.focus();
+        }
+      } catch (err) {
+        console.error('Failed to read clipboard contents: ', err);
+      }
+    }
+  });
+});
+
 		</script>
 	</body>
 </html>
